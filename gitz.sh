@@ -49,9 +49,14 @@ elif [ "$1" = "reset" ] || [ "$1" = "r" ]; then
    printf "WARNING: THIS CAN NOT BE UNDONE !\n"
    read -p "Continue ? (y/n)" choice
  if [ "$choice" = "y" ]; then
-   git config --global init.defaultBranch main
+   b="$(git rev-parse --abbrev-ref HEAD)"
+  if [ -z "$b" ]; then
+   b="main"
+  fi
+   git config --global init.defaultBranch "$b"
    r="$(git config --get remote.origin.url)"
    printf "Repo origin: '$r'\n"
+   printf "Branch: '$b'\n"
    rm -rf .git
    git init
    git add .
@@ -61,7 +66,7 @@ elif [ "$1" = "reset" ] || [ "$1" = "r" ]; then
    read -p "Are you sure want to push the changes (y/n): " choice
    if [ "$choice" = "y" ]; then
      sleep 5
-     git push -u --force origin main
+     git push -u --force origin "$b"
    else
      printf "Aborting ..\n"
    fi
