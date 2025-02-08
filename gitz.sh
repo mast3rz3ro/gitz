@@ -24,8 +24,8 @@ if [ -s "./gitz.sh" ] && [ -z "$1" ]; then
 	echo "Installing: '$PREFIX/bin/gitz'"
 	cp "./gitz.sh" "$PREFIX/bin/gitz"
 elif [ "$1" = "clone" ] || [ "$1" = "c" ]; then
-	u="$(basename "$2")"
-	r="$(dirname "$2")"
+	r="$(basename "$2")"
+	u="$(dirname "$2")"; u="${u/*\/}"
 	git clone "$2" "${r}_${u}"
 elif [ "$1" = "setup" ] || [ "$1" = "s" ]; then
 		read -p "username: " u
