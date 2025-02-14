@@ -69,41 +69,7 @@ elif [ "$1" = "reset" ] || [ "$1" = "r" ]; then
 		echo "Aborting..."
 	fi
 elif [ "$1" = "clean" ] || [ "$1" = "c2" ]; then
-   g="\
-   autom4te.cache
-   aclocal.m4
-   config.h
-   config.log
-   config.sub
-   config.guess
-   config.status
-   configure
-   configure~
-   depcomp
-   install-sh
-   compile
-   main
-   m4
-   *.pc
-   *.o
-   ltmain.sh
-   missing
-   mkinstalldirs
-   libtool
-   stamp-h1
-   Makefile
-"
-		make clean >/dev/null 2>&1
-	for x in $g; do
-		echo "Removing: $x"
-		find ./ -name "$x" -exec rm -rf {} +
-  done
-		git status
-	if [ "$(git status | grep -coF "modified:")" != "0" ] || [ "$(git status | grep -coF "deleted:")" != "0" ]; then
-		c="$(git log --oneline -n1 | awk '{print $1}')"
-		echo "An error occurred, reseting into last commit: $c"
-		git reset --hard "$c"
-	fi
+	git clean -dfx
 else
 		usage
 fi
